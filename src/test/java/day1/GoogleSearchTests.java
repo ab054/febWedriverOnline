@@ -28,9 +28,22 @@ public class GoogleSearchTests {
 
     @Test
     public void test001() {
+        String param1 = "portnov computer school";
+
         openBrowser();
         navigateToMainPage();
-        typeQuery();
+        typeQuery(param1);
+        submitSearch();
+        verifyResultsPage();
+    }
+
+    @Test
+    public void test002() {
+        String param1 = "portnov school";
+
+        openBrowser();
+        navigateToMainPage();
+        typeQuery(param1);
         submitSearch();
         verifyResultsPage();
     }
@@ -64,10 +77,10 @@ public class GoogleSearchTests {
         driver.findElement(By.cssSelector("#tsf > div:nth-child(2) > div.A8SBwf > div.RNNXgb > div > div.a4bIc > input")).submit();
     }
 
-    private void typeQuery() {
+    private void typeQuery(String param1) {
         String locatorCSS = "#tsf > div:nth-child(2) > div.A8SBwf > div.RNNXgb > div > div.a4bIc > input";
         WebElement element = driver.findElement(By.cssSelector(locatorCSS));
-        element.sendKeys("portnov computer school");
+        element.sendKeys(param1);
     }
 
     private void navigateToMainPage() {
