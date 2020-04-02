@@ -7,10 +7,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 public class GoogleSearchTests {
 
@@ -38,13 +35,20 @@ public class GoogleSearchTests {
         verifyResultsPage();
     }
 
-    @Test
-    public void test001() {
-        String param1 = "portnov computer school";
+    @DataProvider(name = "test1")
+    public Object[][] createData1() {
+        return new Object[][]{
+                {"portnov computer school"},
+                {"portnov computer"},
+        };
+    }
 
+
+    @Test(dataProvider = "test1")
+    public void test001(String queryText) {
         openBrowser();
         navigateToMainPage();
-        typeQuery(param1);
+        typeQuery(queryText);
         submitSearch();
         verifyResultsPage();
     }
@@ -92,6 +96,7 @@ public class GoogleSearchTests {
     private void typeQuery(String param1) {
         String locatorCSS = "#tsf > div:nth-child(2) > div.A8SBwf > div.RNNXgb > div > div.a4bIc > input";
         WebElement element = driver.findElement(By.cssSelector(locatorCSS));
+        System.out.println("Typing a query: \"" + param1 + "\"");
         element.sendKeys(param1);
     }
 
