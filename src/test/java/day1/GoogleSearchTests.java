@@ -1,111 +1,42 @@
 package day1;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.Test;
 
-public class GoogleSearchTests {
+public class GoogleSearchTests extends TestBase {
 
-    WebDriver driver;
-
-    @BeforeClass
-    public void testSetup() {
-        System.out.println("test setup");
-        System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "\\src\\test\\resources\\drivers\\geckodriver.exe");
-    }
-
-    @AfterMethod
-    public void suitEnd() {
-        driver.quit();
-    }
-
-
-    @Parameters({"queryForSearch"})
     @Test
-    public void test001Param(String param1) {
-        openBrowser();
-        navigateToMainPage();
-        typeQuery(param1);
-        submitSearch();
-        verifyResultsPage();
-    }
+    public void test001Param() {
+        String testData1 = "Portnov Computer School";
+        GoogleMainPage mainPage = new GoogleMainPage(driver);
+        GoogleResultsPage resultsPage = new GoogleResultsPage(driver);
 
-    @DataProvider(name = "test1")
-    public Object[][] createData1() {
-        return new Object[][]{
-                {"portnov computer school"},
-                {"portnov computer"},
-        };
+        mainPage.navigateTo();
+        mainPage.typeQuery(testData1);
+        mainPage.submitSearch();
+        resultsPage.verifyResultsPage();
     }
-
 
     @Test(dataProvider = "test1")
     public void test001(String queryText) {
-        openBrowser();
-        navigateToMainPage();
-        typeQuery(queryText);
-        submitSearch();
-        verifyResultsPage();
+        GoogleMainPage mainPage = new GoogleMainPage(driver);
+        GoogleResultsPage resultsPage = new GoogleResultsPage(driver);
+
+        mainPage.navigateTo();
+        mainPage.typeQuery(queryText);
+        mainPage.submitSearch();
+        resultsPage.verifyResultsPage();
     }
 
     @Test
     public void test002() {
         String param1 = "portnov school";
 
-        openBrowser();
-        navigateToMainPage();
-        typeQuery(param1);
-        submitSearch();
-        verifyResultsPage();
-    }
+        GoogleMainPage mainPage = new GoogleMainPage(driver);
+        GoogleResultsPage resultsPage = new GoogleResultsPage(driver);
 
-    private void verifyResultsPage() {
-        WebElement element = waitForElement(By.id("result-stats"), 10);
-        String elementText = element.getText();
-        String[] splittedText = elementText.split(" ");
-        String numberOfResults = splittedText[1].replace(",", "");
-        int numberOfResINT = Integer.parseInt(numberOfResults);
-        boolean displayed = element.isDisplayed();
-        Assert.assertTrue(displayed);
-        Assert.assertTrue(numberOfResINT > 100);
-    }
-
-    public WebElement waitForElement(By locator, int numberOfSeconds) {
-        WebElement element = new WebDriverWait(driver, numberOfSeconds)
-                .until(ExpectedConditions.visibilityOfElementLocated(locator));
-        return element;
-    }
-
-    public void sleep() {
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void submitSearch() {
-        driver.findElement(By.cssSelector("#tsf > div:nth-child(2) > div.A8SBwf > div.RNNXgb > div > div.a4bIc > input")).submit();
-    }
-
-    private void typeQuery(String param1) {
-        String locatorCSS = "#tsf > div:nth-child(2) > div.A8SBwf > div.RNNXgb > div > div.a4bIc > input";
-        WebElement element = driver.findElement(By.cssSelector(locatorCSS));
-        System.out.println("Typing a query: \"" + param1 + "\"");
-        element.sendKeys(param1);
-    }
-
-    private void navigateToMainPage() {
-        String url = "https://www.google.com/";
-        driver.get(url);
-    }
-
-    private void openBrowser() {
-        driver = new FirefoxDriver();
+        mainPage.navigateTo();
+        mainPage.typeQuery(param1);
+        mainPage.submitSearch();
+        resultsPage.verifyResultsPage();
     }
 }
