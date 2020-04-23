@@ -6,14 +6,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
+import org.testng.annotations.*;
 
 public class TestBase {
 
     WebDriver driver;
+    public Gpo pom;
 
     public static WebElement waitForElement(WebDriver driver, By locator, int numberOfSeconds) {
         WebElement element = new WebDriverWait(driver, numberOfSeconds)
@@ -24,6 +22,7 @@ public class TestBase {
     @BeforeMethod
     public void setupTest() {
         openBrowser();
+        pom = new Gpo(driver);
     }
 
     @DataProvider(name = "test1")

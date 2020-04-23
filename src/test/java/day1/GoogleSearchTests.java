@@ -7,13 +7,11 @@ public class GoogleSearchTests extends TestBase {
     @Test
     public void test001Param() {
         String testData1 = "Portnov Computer School";
-        GoogleMainPage mainPage = new GoogleMainPage(driver);
-        GoogleResultsPage resultsPage = new GoogleResultsPage(driver);
 
-        mainPage.navigateTo();
-        mainPage.typeQuery(testData1);
-        mainPage.submitSearch();
-        resultsPage.verifyResultsPage();
+        pom.mainPage.navigateTo();
+        pom.mainPage.typeQuery(testData1);
+        pom.mainPage.submitSearch();
+        pom.resultsPage.verifyResultsPage();
     }
 
     @Test(dataProvider = "test1")
